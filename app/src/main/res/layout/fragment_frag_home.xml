@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_fragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.FragHome">
+
+    <com.yuyakaido.android.cardstackview.CardStackView
+        android:id="@+id/cardStackView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:contentDescription="@string/app_name"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="75dp"
+            android:text="CHATS"
+            app:layout_constraintEnd_toEndOf="@+id/btnDelete"
+            app:layout_constraintStart_toStartOf="@+id/btnDelete"
+            app:layout_constraintTop_toTopOf="@+id/btnDelete" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="90dp"
+            android:text="LIKE"
+            app:layout_constraintEnd_toEndOf="@+id/btnLike"
+            app:layout_constraintStart_toStartOf="@+id/btnLike"
+            app:layout_constraintTop_toTopOf="@+id/btnLike" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="PROFILE"
+            app:layout_constraintEnd_toEndOf="@+id/btnBookmark"
+            app:layout_constraintStart_toStartOf="@+id/btnBookmark"
+            app:layout_constraintTop_toBottomOf="@+id/btnBookmark" />
+
+        <ImageButton
+            android:id="@+id/btnDelete"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:background="@drawable/button_background"
+            android:src="@drawable/chat"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btnLike"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/btnLike"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:lottie_rawRes="@raw/like" />
+
+        <ImageButton
+            android:id="@+id/btnBookmark"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:background="@drawable/button_background"
+            android:src="@drawable/profile"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btnLike"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

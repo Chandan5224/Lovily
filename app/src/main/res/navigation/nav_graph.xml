@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/fragHome">
+
+    <fragment
+        android:id="@+id/fragChats"
+        android:name="com.example.myapplication.fragment.FragChats"
+        android:label="fragment_recycle_bin"
+        tools:layout="@layout/fragment_frag_chats" />
+    <fragment
+        android:id="@+id/fragProfile"
+        android:name="com.example.myapplication.fragment.FragProfile"
+        android:label="fragment_save"
+        tools:layout="@layout/fragment_frag_profile" />
+    <fragment
+        android:id="@+id/fragHome"
+        android:name="com.example.myapplication.fragment.FragHome"
+        android:label="FragHome" >
+        <action
+            android:id="@+id/action_fragHome_to_fragProfile"
+            app:destination="@id/fragProfile"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right" />
+        <action
+            android:id="@+id/action_fragHome_to_fragChats"
+            app:destination="@id/fragChats"
+            app:enterAnim="@anim/from_left"
+            app:exitAnim="@anim/to_right"
+            app:popEnterAnim="@anim/from_right"
+            app:popExitAnim="@anim/to_left" />
+    </fragment>
+</navigation>
