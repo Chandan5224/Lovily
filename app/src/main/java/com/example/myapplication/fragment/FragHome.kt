@@ -66,8 +66,8 @@ class FragHome : Fragment() {
             binding.btnLike.playAnimation()
         }
 
-        binding.btnBookmark.setOnClickListener {
-            binding.btnBookmark.startAnimation(
+        binding.btnProfile.setOnClickListener {
+            binding.btnProfile.startAnimation(
                 AnimationUtils.loadAnimation(
                     binding.root.context,
                     R.anim.bounce

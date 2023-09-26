@@ -45,5 +45,22 @@
             app:launchSingleTop="true"
             app:popUpTo="@id/fragLogin2"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_fragLogin2_to_fragSignUp"
+            app:destination="@id/fragSignUp"
+            app:launchSingleTop="false"
+            app:popUpTo="@id/fragLogin2"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragSignUp"
+        android:name="com.example.myapplication.fragment.FragSignUp"
+        android:label="fragment_frag_sign_up"
+        tools:layout="@layout/fragment_frag_sign_up" >
+        <action
+            android:id="@+id/action_fragSignUp_to_fragHome"
+            app:destination="@id/fragHome"
+            app:popUpTo="@id/fragSignUp"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>
