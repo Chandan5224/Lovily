@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -41,6 +42,11 @@ class FragHome : Fragment() {
         // Inflate the layout for this fragment
 
         setCardViews()
+
+        activity?.window?.setFlags(
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+        )
         binding.btnLike.progress = 0f
         val statusBarHeight = (activity as MainActivity).heightStatus
         binding.homeFragment.setPadding(0, statusBarHeight, 0, statusBarHeight)

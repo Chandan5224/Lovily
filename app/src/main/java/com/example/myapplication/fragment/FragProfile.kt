@@ -1,5 +1,6 @@
 package com.example.myapplication.fragment
 
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -20,6 +21,7 @@ class FragProfile : Fragment() {
         super.onCreate(savedInstanceState)
         binding = FragmentFragProfileBinding.inflate(layoutInflater)
 
+        ///
         val statusBarHeight = (activity as MainActivity).heightStatus
         binding.profileFragment.setPadding(0, 0, 0, statusBarHeight)
 

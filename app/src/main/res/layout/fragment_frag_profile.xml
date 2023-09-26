@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:id="@+id/profileFragment"
+    android:background="@drawable/login_bg"
     android:layout_height="match_parent"
     tools:context=".fragment.FragProfile">
 
@@ -35,6 +36,7 @@
         android:layout_height="0dp"
         android:scaleType="centerCrop"
         android:src="@drawable/img_2"
+        android:background="@drawable/half_circle"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout2"
         app:layout_constraintTop_toTopOf="parent" />
 

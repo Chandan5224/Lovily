@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/fragHome">
+    app:startDestination="@id/fragLogin2">
 
     <fragment
         android:id="@+id/fragChats"
@@ -33,5 +33,17 @@
             app:exitAnim="@anim/to_right"
             app:popEnterAnim="@anim/from_right"
             app:popExitAnim="@anim/to_left" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragLogin2"
+        android:name="com.example.myapplication.fragment.FragLogin"
+        android:label="fragment_frag_login"
+        tools:layout="@layout/fragment_frag_login" >
+        <action
+            android:id="@+id/action_fragLogin2_to_fragHome"
+            app:destination="@id/fragHome"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/fragLogin2"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>
