@@ -7,12 +7,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation.findNavController
 import com.example.myapplication.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
     lateinit var sharedPreferences: SharedPreferences
+    lateinit var viewModel: MainViewModel
     var logIn: Boolean = false
     var heightStatus = 0
 
@@ -20,6 +22,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        /// ViewModel Setup
+        val newsRepository = Repository()
+        val viewModelProviderFactory = ViewModelProviderFactory(newsRepository)
+        viewModel = ViewModelProvider(this, viewModelProviderFactory)[MainViewModel::class.java]
+
+
+        /// share preference
         sharedPreferences = getSharedPreferences(
             "user",
             Context.MODE_PRIVATE

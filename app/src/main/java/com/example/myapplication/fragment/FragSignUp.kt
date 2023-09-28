@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.example.myapplication.MainActivity
 import com.example.myapplication.R
@@ -31,7 +32,11 @@ class FragSignUp : Fragment() {
             Handler(Looper.getMainLooper()).postDelayed({
                 binding.loginLoader.visibility = View.GONE
                 sharedPreferences.edit().putBoolean("token", true).apply()
-                findNavController().navigate(R.id.action_fragSignUp_to_fragHome)
+                val navOptions = NavOptions.Builder()
+                    .setPopUpTo(R.id.fragHome, true) // Set the destination and inclusive flag
+                    .setPopUpTo(R.id.fragLogin2, true)
+                    .build()
+                findNavController().navigate(R.id.action_fragSignUp_to_fragHome, null, navOptions)
             }, 3000)
         }
         return binding.root
