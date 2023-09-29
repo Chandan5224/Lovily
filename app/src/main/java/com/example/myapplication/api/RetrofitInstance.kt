@@ -1,12 +1,12 @@
 package com.example.myapplication.api
 
+import com.example.myapplication.util.Constants.Companion.BASE_URL
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-const val BASE_URL = "http://192.168.29.38:3000/api/users/"
 
 class RetrofitInstance {
     companion object {

@@ -26,6 +26,8 @@ import com.google.android.material.snackbar.Snackbar
 class FragLogin : Fragment() {
 
     private lateinit var binding: FragmentFragLoginBinding
+    private lateinit var viewModel: MainViewModel
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,65 +39,64 @@ class FragLogin : Fragment() {
     ): View? {
 //        activity?.window?.statusBarColor = Color.BLUE
 
+        /// viewModel
+        viewModel = (activity as MainActivity).viewModel
+
         /// Shared Preferences
         val logIn = (activity as MainActivity).logIn
-        val sharedPreferences = (activity as MainActivity).sharedPreferences
+        sharedPreferences = (activity as MainActivity).sharedPreferences
         if (logIn) {
             findNavController().navigate(R.id.action_fragLogin2_to_fragHome)
         }
 
-        /// viewModel
-        val viewModel = (activity as MainActivity).viewModel
 
         //Click Handel
-
-        ///sign in
         binding.btnLogIn.setOnClickListener {
-            val username = binding.etUsername.text.toString().trim()
-            val password = binding.etPassword.text.toString().trim()
-            if (username.isNotBlank() && password.isNotBlank()) {
-                binding.loginLoader.visibility = View.VISIBLE
-                viewModel.login(username, password)
-                viewModel.login.observe(viewLifecycleOwner, Observer { response ->
-                    when (response) {
-                        is Resource.Success -> {
-                            binding.loginLoader.visibility = View.GONE
-                            sharedPreferences.edit().putBoolean("token", true).apply()
-                            findNavController().navigate(R.id.action_fragLogin2_to_fragHome)
-                        }
-                        is Resource.Error -> {
-                            binding.loginLoader.visibility = View.GONE
-                            response.message?.let { message ->
-                                Log.e("TAG", "An error occurred : $message")
-                            }
-                            Snackbar.make(
-                                binding.root,
-                                response.message.toString(),
-                                Snackbar.LENGTH_SHORT
-                            ).show()
-                        }
-
-                        is Resource.Loading -> {
-                            binding.loginLoader.visibility = View.VISIBLE
-                        }
-                        else -> {}
-                    }
-                })
-            } else {
-                Snackbar.make(
-                    binding.root,
-                    "fill out all the details",
-                    Snackbar.LENGTH_SHORT
-                ).show()
-            }
+            signInHandel()
         }
-
-        //sign up
         binding.btnSignUp.setOnClickListener {
-
             findNavController().navigate(R.id.action_fragLogin2_to_fragSignUp)
         }
 
+
+
         return binding.root
+    }
+
+    private fun signInHandel() {
+        val username = binding.etUsername.text.toString().trim()
+        val password = binding.etPassword.text.toString().trim()
+        if (username.isNotBlank() && password.isNotBlank()) {
+            binding.loginLoader.visibility = View.VISIBLE
+            viewModel.login(username, password)
+            viewModel.login.observe(viewLifecycleOwner, Observer { response ->
+                when (response) {
+                    is Resource.Success -> {
+                        binding.loginLoader.visibility = View.GONE
+                        sharedPreferences.edit().putBoolean("token", true).apply()
+                        val navOptions =
+                            NavOptions.Builder().setPopUpTo(R.id.fragLogin2, true).build()
+                        findNavController().navigate(
+                            R.id.action_fragLogin2_to_fragHome, null, navOptions
+                        )
+                    }
+                    is Resource.Error -> {
+                        binding.loginLoader.visibility = View.GONE
+                        response.message?.let { message ->
+                            Log.e("TAG", "An error occurred : $message")
+                        }
+                    }
+
+                    is Resource.Loading -> {
+                        binding.loginLoader.visibility = View.VISIBLE
+                    }
+                }
+            })
+        } else {
+            Snackbar.make(
+                binding.root, "fill out all the details", Snackbar.LENGTH_SHORT
+            ).show()
+
+        }
     }
 }
