@@ -57,6 +57,25 @@ class FragLogin : Fragment() {
         binding.btnSignUp.setOnClickListener {
             findNavController().navigate(R.id.action_fragLogin2_to_fragSignUp)
         }
+        viewModel.login.observe(viewLifecycleOwner, Observer { response ->
+            when (response) {
+                is Resource.Success -> {
+                    binding.loginLoader.visibility = View.GONE
+                    sharedPreferences.edit().putBoolean("token", true).apply()
+                    findNavController().navigate(R.id.action_fragLogin2_to_fragHome)
+                }
+                is Resource.Error -> {
+                    binding.loginLoader.visibility = View.GONE
+                    response.message?.let { message ->
+                        Log.e("TAG", "An error occurred : $message")
+                    }
+                }
+
+                is Resource.Loading -> {
+                    binding.loginLoader.visibility = View.VISIBLE
+                }
+            }
+        })
 
 
 
@@ -69,29 +88,6 @@ class FragLogin : Fragment() {
         if (username.isNotBlank() && password.isNotBlank()) {
             binding.loginLoader.visibility = View.VISIBLE
             viewModel.login(username, password)
-            viewModel.login.observe(viewLifecycleOwner, Observer { response ->
-                when (response) {
-                    is Resource.Success -> {
-                        binding.loginLoader.visibility = View.GONE
-                        sharedPreferences.edit().putBoolean("token", true).apply()
-                        val navOptions =
-                            NavOptions.Builder().setPopUpTo(R.id.fragLogin2, true).build()
-                        findNavController().navigate(
-                            R.id.action_fragLogin2_to_fragHome, null, navOptions
-                        )
-                    }
-                    is Resource.Error -> {
-                        binding.loginLoader.visibility = View.GONE
-                        response.message?.let { message ->
-                            Log.e("TAG", "An error occurred : $message")
-                        }
-                    }
-
-                    is Resource.Loading -> {
-                        binding.loginLoader.visibility = View.VISIBLE
-                    }
-                }
-            })
         } else {
             Snackbar.make(
                 binding.root, "fill out all the details", Snackbar.LENGTH_SHORT

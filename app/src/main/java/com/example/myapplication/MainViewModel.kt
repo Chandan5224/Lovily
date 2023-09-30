@@ -56,12 +56,12 @@ class MainViewModel(
                         login.postValue(Resource.Success(true))
                     else {
                         login.postValue(Resource.Error(response.body()!!.message))
-                        errorMessageLiveData.postValue(response.body()!!.message+"inside")
+                        errorMessageLiveData.postValue(response.body()!!.message)
                     }
                 }
             } else {
                 // Handle unsuccessful response (e.g., server error)
-                errorMessageLiveData.postValue(response.body()!!.message+"outside")
+                errorMessageLiveData.postValue(response.body()!!.message)
             }
         } catch (e: SocketTimeoutException) {
             // Handle SocketTimeoutException (timeout error)

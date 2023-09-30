@@ -51,8 +51,8 @@ class FragHome : Fragment() {
         val statusBarHeight = (activity as MainActivity).heightStatus
         binding.homeFragment.setPadding(0, statusBarHeight, 0, statusBarHeight)
 
-        binding.btnDelete.setOnClickListener {
-            binding.btnDelete.startAnimation(
+        binding.btnChats.setOnClickListener {
+            binding.btnChats.startAnimation(
                 AnimationUtils.loadAnimation(
                     binding.root.context,
                     R.anim.bounce
@@ -75,8 +75,10 @@ class FragHome : Fragment() {
             )
             findNavController().navigate(R.id.action_fragHome_to_fragProfile)
         }
+
         return binding.root
     }
+
 
     private fun setCardViews() {
         cardManager = CardStackLayoutManager(binding.root.context, object : CardStackListener {

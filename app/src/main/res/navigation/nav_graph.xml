@@ -42,13 +42,11 @@
         <action
             android:id="@+id/action_fragLogin2_to_fragHome"
             app:destination="@id/fragHome"
-            app:launchSingleTop="true"
-            app:popUpToInclusive="false" />
+            app:popUpTo="@id/fragLogin2"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_fragLogin2_to_fragSignUp"
-            app:destination="@id/fragSignUp"
-            app:launchSingleTop="false"
-            app:popUpToInclusive="false" />
+            app:destination="@id/fragSignUp" />
     </fragment>
     <fragment
         android:id="@+id/fragSignUp"
@@ -58,6 +56,7 @@
         <action
             android:id="@+id/action_fragSignUp_to_fragHome"
             app:destination="@id/fragHome"
-            app:popUpToInclusive="false" />
+            app:popUpTo="@id/fragLogin2"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>

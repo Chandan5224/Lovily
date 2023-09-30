@@ -3,6 +3,7 @@ package com.example.myapplication.fragment
 import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
@@ -29,6 +30,7 @@ import com.google.android.material.snackbar.Snackbar
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -40,6 +42,7 @@ class FragSignUp : Fragment() {
     lateinit var sharedPreferences: SharedPreferences
     lateinit var viewModel: MainViewModel
     private var imageUri: Uri = "".toUri()
+    lateinit var compressBitmap: Bitmap
     var gender = "M"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,7 +76,21 @@ class FragSignUp : Fragment() {
         registerForActivityResult(ActivityResultContracts.GetContent(), ActivityResultCallback {
             if (it != null) {
                 imageUri = it
-                binding.imgViewUserPic.setImageURI(it)
+
+                val inputStream = requireActivity().contentResolver.openInputStream(it)
+                val bitmap = BitmapFactory.decodeStream(inputStream)
+                inputStream?.close()
+                // Convert the size to megabytes
+                val imageSizeInMb = bitmap.byteCount / (1024 * 1024).toFloat()
+                compressBitmap = if (imageSizeInMb > 2) {
+                    val stream = ByteArrayOutputStream()
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 50, stream)
+                    val bitmapArray = stream.toByteArray()
+                    BitmapFactory.decodeByteArray(bitmapArray, 0, bitmapArray.size)
+                } else {
+                    bitmap
+                }
+                binding.imgViewUserPic.setImageBitmap(compressBitmap)
             } else {
                 binding.imgViewUserPic.setImageDrawable(
                     ResourcesCompat.getDrawable(
@@ -100,10 +117,11 @@ class FragSignUp : Fragment() {
     }
 
     private fun createPartFromImage(): MultipartBody.Part {
-        val drawable = binding.imgViewUserPic.drawable as BitmapDrawable
-        val bitmap = drawable.bitmap
         val imageFile =
-            bitmapToFile(bitmap, binding.root.context) // Replace with your Bitmap and Context
+            bitmapToFile(
+                compressBitmap,
+                binding.root.context
+            ) // Replace with your Bitmap and Context
         val requestFile =
             RequestBody.create("multipart/form-data".toMediaTypeOrNull(), imageFile)
         return MultipartBody.Part.createFormData("image", imageFile.name, requestFile)
@@ -112,7 +130,6 @@ class FragSignUp : Fragment() {
 
     private fun signUpHandel() {
         if (imageUri.toString().isNotEmpty()) {
-
             val username = binding.etUsername.text.toString().trim()
             val password1 = binding.etPassword1.text.toString().trim()
             val password2 = binding.etPassword2.text.toString().trim()
@@ -157,13 +174,7 @@ class FragSignUp : Fragment() {
                                             binding.signupLoader.visibility = View.GONE
                                             sharedPreferences.edit().putBoolean("token", true)
                                                 .apply()
-                                            val navOptions = NavOptions.Builder().setPopUpTo(
-                                                R.id.fragHome, true
-                                            ) // Set the destination and inclusive flag
-                                                .setPopUpTo(R.id.fragLogin2, true).build()
-                                            findNavController().navigate(
-                                                R.id.action_fragSignUp_to_fragHome, null, navOptions
-                                            )
+                                            findNavController().navigate(R.id.action_fragSignUp_to_fragHome)
 
                                         }
                                         is Resource.Error -> {
