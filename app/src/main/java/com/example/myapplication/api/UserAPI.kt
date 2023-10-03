@@ -21,6 +21,7 @@ interface UserAPI {
     @GET("ByEmail")
     suspend fun getUserByEmail(@Query("email") email: String): Response<SuccessDataResponse>
 
+    @GET("byUsername")
     suspend fun getUserByUsername(@Query("username") username: String):Response<SuccessDataResponse>
 
     @PATCH("update")

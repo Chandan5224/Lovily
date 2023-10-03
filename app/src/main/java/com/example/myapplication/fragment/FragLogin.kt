@@ -22,13 +22,19 @@ import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentFragLoginBinding
 import com.example.myapplication.util.Resource
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
+@OptIn(DelicateCoroutinesApi::class)
 class FragLogin : Fragment() {
 
     private lateinit var binding: FragmentFragLoginBinding
     private lateinit var viewModel: MainViewModel
     private lateinit var sharedPreferences: SharedPreferences
-
+    private var username: String = ""
+    private lateinit var password: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = FragmentFragLoginBinding.inflate(layoutInflater)
@@ -43,9 +49,10 @@ class FragLogin : Fragment() {
         viewModel = (activity as MainActivity).viewModel
 
         /// Shared Preferences
-        val logIn = (activity as MainActivity).logIn
+        val logIn = (activity as MainActivity).sharedPreferences.getBoolean("token", false)
         sharedPreferences = (activity as MainActivity).sharedPreferences
         if (logIn) {
+            Log.d("LOGIN", "FragLogin")
             findNavController().navigate(R.id.action_fragLogin2_to_fragHome)
         }
 
@@ -57,37 +64,34 @@ class FragLogin : Fragment() {
         binding.btnSignUp.setOnClickListener {
             findNavController().navigate(R.id.action_fragLogin2_to_fragSignUp)
         }
-        viewModel.login.observe(viewLifecycleOwner, Observer { response ->
-            when (response) {
-                is Resource.Success -> {
-                    binding.loginLoader.visibility = View.GONE
-                    sharedPreferences.edit().putBoolean("token", true).apply()
-                    findNavController().navigate(R.id.action_fragLogin2_to_fragHome)
-                }
-                is Resource.Error -> {
-                    binding.loginLoader.visibility = View.GONE
-                    response.message?.let { message ->
-                        Log.e("TAG", "An error occurred : $message")
-                    }
-                }
-
-                is Resource.Loading -> {
-                    binding.loginLoader.visibility = View.VISIBLE
-                }
-            }
-        })
-
 
 
         return binding.root
     }
 
     private fun signInHandel() {
-        val username = binding.etUsername.text.toString().trim()
-        val password = binding.etPassword.text.toString().trim()
+        username = binding.etUsername.text.toString().trim()
+        password = binding.etPassword.text.toString().trim()
         if (username.isNotBlank() && password.isNotBlank()) {
             binding.loginLoader.visibility = View.VISIBLE
-            viewModel.login(username, password)
+            GlobalScope.launch(Dispatchers.Main) {
+                val response = viewModel.login(username, password)
+                if (response.isSuccessful) {
+                    response.body()?.let { resultResponse ->
+                        if (resultResponse.success == 1) {
+                            binding.loginLoader.visibility = View.GONE
+                            sharedPreferences.edit().putString("username", username).apply()
+                            sharedPreferences.edit().putBoolean("token", true).apply()
+                            findNavController().navigate(R.id.action_fragLogin2_to_fragHome)
+                        } else {
+                            binding.loginLoader.visibility = View.GONE
+                            viewModel.errorMessageLiveData.postValue(response.body()!!.message)
+                        }
+                    }
+                } else {
+                    Log.d("TAG", "Exception Happen")
+                }
+            }
         } else {
             Snackbar.make(
                 binding.root, "fill out all the details", Snackbar.LENGTH_SHORT

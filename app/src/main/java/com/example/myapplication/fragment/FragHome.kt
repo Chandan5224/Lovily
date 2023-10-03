@@ -1,11 +1,11 @@
 package com.example.myapplication.fragment
 
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.WindowManager
+import android.view.*
 import android.view.animation.AnimationUtils
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.myapplication.MainActivity
@@ -35,6 +35,7 @@ class FragHome : Fragment() {
         binding = FragmentFragHomeBinding.inflate(layoutInflater)
     }
 
+    @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -42,14 +43,21 @@ class FragHome : Fragment() {
         // Inflate the layout for this fragment
 
         setCardViews()
+        // window and status bar handel
+        val window = activity!!.window
+//        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+//        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+//        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+//        window.decorView.windowInsetsController?.setSystemBarsAppearance(
+//            WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS,
+//            WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
+//        );
+//        window.statusBarColor = Color.TRANSPARENT
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
 
-        activity?.window?.setFlags(
-            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
-        )
         binding.btnLike.progress = 0f
         val statusBarHeight = (activity as MainActivity).heightStatus
-        binding.homeFragment.setPadding(0, statusBarHeight, 0, statusBarHeight)
+        binding.homeFragment.setPadding(0, statusBarHeight, 0, 0)
 
         binding.btnChats.setOnClickListener {
             binding.btnChats.startAnimation(

@@ -14,7 +14,17 @@
         android:id="@+id/fragProfile"
         android:name="com.example.myapplication.fragment.FragProfile"
         android:label="fragment_save"
-        tools:layout="@layout/fragment_frag_profile" />
+        tools:layout="@layout/fragment_frag_profile" >
+        <action
+            android:id="@+id/action_fragProfile_to_fragLogin2"
+            app:destination="@id/fragLogin2"
+            app:enterAnim="@anim/from_left"
+            app:exitAnim="@anim/to_right"
+            app:popEnterAnim="@anim/from_right"
+            app:popExitAnim="@anim/to_left"
+            app:popUpTo="@id/fragHome"
+            app:popUpToInclusive="true" />
+    </fragment>
     <fragment
         android:id="@+id/fragHome"
         android:name="com.example.myapplication.fragment.FragHome"
@@ -42,11 +52,19 @@
         <action
             android:id="@+id/action_fragLogin2_to_fragHome"
             app:destination="@id/fragHome"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right"
             app:popUpTo="@id/fragLogin2"
             app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_fragLogin2_to_fragSignUp"
-            app:destination="@id/fragSignUp" />
+            app:destination="@id/fragSignUp"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right"/>
     </fragment>
     <fragment
         android:id="@+id/fragSignUp"
@@ -56,6 +74,10 @@
         <action
             android:id="@+id/action_fragSignUp_to_fragHome"
             app:destination="@id/fragHome"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right"
             app:popUpTo="@id/fragLogin2"
             app:popUpToInclusive="true" />
     </fragment>

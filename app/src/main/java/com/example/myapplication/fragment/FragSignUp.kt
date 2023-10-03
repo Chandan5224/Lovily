@@ -43,7 +43,9 @@ class FragSignUp : Fragment() {
     lateinit var viewModel: MainViewModel
     private var imageUri: Uri = "".toUri()
     lateinit var compressBitmap: Bitmap
-    var gender = "M"
+    var gender = "Male"
+    lateinit var username: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = FragmentFragSignUpBinding.inflate(layoutInflater)
@@ -51,7 +53,7 @@ class FragSignUp : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         sharedPreferences = (activity as MainActivity).sharedPreferences
         viewModel = (activity as MainActivity).viewModel
@@ -65,9 +67,8 @@ class FragSignUp : Fragment() {
         }
 
         binding.genderRadioGroup.setOnCheckedChangeListener { group, checkedId ->
-            val selectedRadioButton =
-                binding.root.findViewById<RadioButton>(checkedId)
-            gender = selectedRadioButton.text.toString()[0].toString()
+            val selectedRadioButton = binding.root.findViewById<RadioButton>(checkedId)
+            gender = selectedRadioButton.text.toString()
         }
         return binding.root
     }
@@ -76,15 +77,14 @@ class FragSignUp : Fragment() {
         registerForActivityResult(ActivityResultContracts.GetContent(), ActivityResultCallback {
             if (it != null) {
                 imageUri = it
-
                 val inputStream = requireActivity().contentResolver.openInputStream(it)
                 val bitmap = BitmapFactory.decodeStream(inputStream)
                 inputStream?.close()
                 // Convert the size to megabytes
                 val imageSizeInMb = bitmap.byteCount / (1024 * 1024).toFloat()
-                compressBitmap = if (imageSizeInMb > 2) {
+                compressBitmap = if (imageSizeInMb > 0.7f) {
                     val stream = ByteArrayOutputStream()
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 50, stream)
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 10, stream)
                     val bitmapArray = stream.toByteArray()
                     BitmapFactory.decodeByteArray(bitmapArray, 0, bitmapArray.size)
                 } else {
@@ -117,20 +117,17 @@ class FragSignUp : Fragment() {
     }
 
     private fun createPartFromImage(): MultipartBody.Part {
-        val imageFile =
-            bitmapToFile(
-                compressBitmap,
-                binding.root.context
-            ) // Replace with your Bitmap and Context
-        val requestFile =
-            RequestBody.create("multipart/form-data".toMediaTypeOrNull(), imageFile)
+        val imageFile = bitmapToFile(
+            compressBitmap, binding.root.context
+        ) // Replace with your Bitmap and Context
+        val requestFile = RequestBody.create("multipart/form-data".toMediaTypeOrNull(), imageFile)
         return MultipartBody.Part.createFormData("image", imageFile.name, requestFile)
 
     }
 
     private fun signUpHandel() {
         if (imageUri.toString().isNotEmpty()) {
-            val username = binding.etUsername.text.toString().trim()
+            username = binding.etUsername.text.toString().trim()
             val password1 = binding.etPassword1.text.toString().trim()
             val password2 = binding.etPassword2.text.toString().trim()
             val email = binding.etUserEmail.text.toString().trim()
@@ -160,18 +157,21 @@ class FragSignUp : Fragment() {
                                 password1,
                                 age,
                                 gender,
+                                "",
                                 city,
                                 about,
                                 profileImage,
                                 ""
                             )
                             viewModel.signUp(user)
-                            viewModel.signup.observe(
-                                viewLifecycleOwner,
+                            viewModel.signup.observe(viewLifecycleOwner,
                                 Observer { signupResponse ->
+                                    Log.d("TAG", "sign up working")
                                     when (signupResponse) {
                                         is Resource.Success -> {
                                             binding.signupLoader.visibility = View.GONE
+                                            sharedPreferences.edit().putString("username", username)
+                                                .apply()
                                             sharedPreferences.edit().putBoolean("token", true)
                                                 .apply()
                                             findNavController().navigate(R.id.action_fragSignUp_to_fragHome)
@@ -205,16 +205,12 @@ class FragSignUp : Fragment() {
                 })
             } else {
                 Snackbar.make(
-                    binding.root,
-                    "Please fill out all the details.",
-                    Snackbar.LENGTH_SHORT
+                    binding.root, "Please fill out all the details.", Snackbar.LENGTH_SHORT
                 ).show()
             }
         } else {
             Snackbar.make(
-                binding.root,
-                "Please upload your profile picture.",
-                Snackbar.LENGTH_SHORT
+                binding.root, "Please upload your profile picture.", Snackbar.LENGTH_SHORT
             ).show()
         }
     }

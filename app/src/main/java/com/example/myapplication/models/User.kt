@@ -6,24 +6,26 @@ data class User(
     @SerializedName("id")
     val id: Int?,
     @SerializedName("name")
-    val name: String?,
+    val name: String,
     @SerializedName("username")
-    val username: String?,
+    val username: String,
     @SerializedName("email")
-    val email: String?,
+    val email: String,
     @SerializedName("password")
-    val password: String?,
+    val password: String,
     @SerializedName("age")
-    val age: Int?,
+    val age: Int,
     @SerializedName("gender")
-    val gender: String?,
+    val gender: String,
+    @SerializedName("job")
+    val job: String,
     @SerializedName("city")
-    val city: String?,
+    val city: String,
     @SerializedName("about")
-    val about: String?,
+    val about: String,
     @SerializedName("profileimage")
-    val profileImage: String?,
-    @SerializedName("profilebackground")
-    val profileBackground: String?
+    val profileImage: String,
+    @SerializedName("backgroundimage")
+    val profileBackground: String
 
 )

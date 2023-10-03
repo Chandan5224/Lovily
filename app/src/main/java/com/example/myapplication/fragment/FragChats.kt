@@ -22,7 +22,7 @@ class FragChats : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val statusBarHeight = (activity as MainActivity).heightStatus
-        binding.chatsFragment.setPadding(0, statusBarHeight, 0, statusBarHeight)
+        binding.chatsFragment.setPadding(0, statusBarHeight, 0, 0)
         return binding.root
     }
 }
