@@ -75,7 +75,8 @@ class FragProfile : Fragment() {
                         binding.tvJob.text = user.job
                     }
                     if (user.profileBackground.isNullOrBlank()) {
-                        Glide.with(this).load(user.profileImage).into(binding.imgViewProfileBg)
+                        Glide.with(this).load(user.profileImage).placeholder(R.color.profileCover)
+                            .into(binding.imgViewProfileBg)
                     } else {
                         Glide.with(this).load(user.profileBackground).into(binding.imgViewProfileBg)
                     }
@@ -116,6 +117,9 @@ class FragProfile : Fragment() {
                     binding.root.context, R.anim.bounce
                 )
             )
+            val bundle = Bundle()
+            bundle.putString("username", username)
+            findNavController().navigate(R.id.action_fragProfile_to_fragEditProfile, bundle)
         }
         binding.btnSignOut.setOnClickListener {
             binding.btnSignOut.startAnimation(

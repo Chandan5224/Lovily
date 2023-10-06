@@ -45,14 +45,14 @@ class FragHome : Fragment() {
         setCardViews()
         // window and status bar handel
         val window = activity!!.window
-//        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-//        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-//        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-//        window.decorView.windowInsetsController?.setSystemBarsAppearance(
-//            WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS,
-//            WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
-//        );
-//        window.statusBarColor = Color.TRANSPARENT
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+        window.decorView.windowInsetsController?.setSystemBarsAppearance(
+            WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS,
+            WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
+        );
+        window.statusBarColor = Color.TRANSPARENT
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
 
         binding.btnLike.progress = 0f

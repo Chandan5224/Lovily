@@ -24,6 +24,13 @@
             app:popExitAnim="@anim/to_left"
             app:popUpTo="@id/fragHome"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_fragProfile_to_fragEditProfile"
+            app:destination="@id/fragEditProfile"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right"/>
     </fragment>
     <fragment
         android:id="@+id/fragHome"
@@ -81,4 +88,9 @@
             app:popUpTo="@id/fragLogin2"
             app:popUpToInclusive="true" />
     </fragment>
+    <fragment
+        android:id="@+id/fragEditProfile"
+        android:name="com.example.myapplication.fragment.FragEditProfile"
+        android:label="fragment_frag_edit_profile"
+        tools:layout="@layout/fragment_frag_edit_profile" />
 </navigation>

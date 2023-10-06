@@ -21,7 +21,8 @@ class CardStackAdapter : RecyclerView.Adapter<CardStackAdapter.CardViewHolder>()
     }
 
     override fun onBindViewHolder(holder: CardViewHolder, position: Int) {
-        Glide.with(holder.itemView).load(items[position]).into(holder.image)
+        Glide.with(holder.itemView).load(items[position]).placeholder(R.drawable.progress_animation)
+            .into(holder.image)
     }
 
     override fun getItemCount(): Int {
